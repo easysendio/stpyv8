@@ -107,8 +107,10 @@ def get_libboost_python_name():
 STPYV8_BOOST_PYTHON = os.getenv('STPYV8_BOOST_PYTHON', default = get_libboost_python_name())
 
 if os.name in ("nt", ):
-    include_dirs       += os.environ["INCLUDE"].split(';')
-    library_dirs       += os.environ["LIB"].split(';')
+    include_dirs       += [os.environ["BOOST_INCLUDE_DIR"]]
+    library_dirs       += [os.environ["BOOST_LIBRARY_DIR"]]
+    # include_dirs       += os.environ["INCLUDE"].split(';')
+    # library_dirs       += os.environ["LIB"].split(';')
     libraries          += ["winmm", "ws2_32"]
     extra_compile_args += ["/O2", "/GL", "/MT", "/EHsc", "/Gy", "/Zi"]
     extra_link_args    += ["/DLL", "/OPT:REF", "/OPT:ICF", "/MACHINE:X86"]

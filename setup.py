@@ -19,14 +19,18 @@ def exec_cmd(cmdline, *args, **kwargs):
     msg    = kwargs.get('msg')
     cwd    = kwargs.get('cwd', '.')
     output = kwargs.get('output')
+    keep_args_separated = kwargs.get('keep_args_separated', False)
 
     if msg:
         print(msg)
 
-    cmdline = ' '.join([cmdline] + list(args))
+    cmdline = [cmdline] + list(args)
+    if not keep_args_separated:
+        cmdline = ' '.join(cmdline)
+    log.warning(f"Running command: {cmdline!r}")
 
     proc = subprocess.Popen(cmdline, # pylint:disable=consider-using-with
-                            shell  = kwargs.get('shell', True),
+                            shell  = kwargs.get('shell', not keep_args_separated),
                             cwd    = cwd,
                             env    = kwargs.get('env'),
                             stdout = subprocess.PIPE if output else None,
@@ -94,10 +98,11 @@ def checkout_v8():
                  msg = "Installing additional linux dependencies")
 
 def build_v8():
-    exec_cmd(os.path.join(DEPOT_HOME, 'gn'),
-             f"gen out.gn/x64.release.sample --args='{GN_ARGS}'",
+    exec_cmd(os.path.join(DEPOT_HOME, 'gn.bat'),  # TODO
+             'gen', 'out.gn/x64.release.sample', f'--args={GN_ARGS}', # TODO --args='...'
              cwd = V8_HOME,
-             msg = f"Generate build scripts for V8 (v{V8_GIT_TAG})")
+             msg = f"Generate build scripts for V8 (v{V8_GIT_TAG})",
+             keep_args_separated=True)
 
     exec_cmd(os.path.join(DEPOT_HOME, 'ninja'),
              "-C out.gn/x64.release.sample v8_monolith",

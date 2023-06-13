@@ -1,0 +1,135 @@
+name: Build Windows wheel
+run-name: Build Windows wheel
+
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build wheel on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # targetplatform: [x64] # TODO x86
+        os: [windows-latest]
+        python-version: ["3.11"]
+    env:  # d:\ is 14GB. V8 hits that
+      DEPOT_HOME: "C:/tmp_stpyv8/depot_home"
+      V8_HOME: "C:/tmp_stpyv8/v8"
+
+    steps:
+      - name: STEP 1. Checkout repository
+        uses: actions/checkout@v3
+
+      - name: STEP 2. Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: STEP 2.1 Create build folders  # TODO check if needed
+        shell: bash
+        run: |
+          mkdir -p "$DEPOT_HOME"
+          mkdir -p "$V8_HOME"
+
+      - name: Setup Boost
+        uses: MarkusJx/install-boost@v2.4.1
+        id: install-boost
+        with:
+          # REQUIRED: Specify the required boost version
+          # A list of supported versions can be found here:
+          # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
+          boost_version: 1.81.0
+          toolset: msvc
+          platform_version: 2022
+          link: static
+          # arch: aarch64 # TODO
+          # OPTIONAL: Specify a custon install location
+          # boost_install_dir: C:\some_directory
+        # shell: pwsh
+        # run: |
+        #   choco install boost-msvc-14.3
+
+      #     echo GITHUB_REPOSITORY: %GITHUB_REPOSITORY%
+      #     for /f %%i in ("%GITHUB_REPOSITORY%") do set LIBRARY=%%~nxi
+      #     echo LIBRARY: %LIBRARY%
+      #     echo LIBRARY=%LIBRARY%>>%GITHUB_ENV%
+      #     echo GITHUB_BASE_REF: %GITHUB_BASE_REF%
+      #     echo GITHUB_REF: %GITHUB_REF%
+      #     if "%GITHUB_BASE_REF%" == "" set GITHUB_BASE_REF=%GITHUB_REF%
+      #     set BOOST_BRANCH=develop
+      #     for /f %%i in ("%GITHUB_BASE_REF%") do if "%%~nxi" == "master" set BOOST_BRANCH=master
+      #     echo BOOST_BRANCH: %BOOST_BRANCH%
+      #     cd ..
+      #     git clone -b %BOOST_BRANCH% --depth 10 https://github.com/boostorg/boost.git boost-root
+      #     cd boost-root
+      #     xcopy /s /e /q %GITHUB_WORKSPACE% libs\%LIBRARY%\
+      #     git submodule update --init tools/boostdep
+      #     python tools/boostdep/depinst/depinst.py --include benchmark --include example --include examples --include tools --git_args "--jobs 3" %LIBRARY%
+      #     cmd /c bootstrap
+      #     b2 -d0 headers
+
+      - name: STEP 3. Install dependencies
+        run: |
+          pip install --upgrade pip setuptools wheel pytest
+
+      - name: Cache V8
+        id: cache-v8
+        uses: actions/cache@v3
+        env:
+          cache-name: v8
+        with:
+          path: v8
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/v8-version.h') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: STEP 4.1. Build V8
+        shell: bash
+        env:
+          BOOST_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}\include
+          BOOST_LIBRARY_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}\lib
+          DEPOT_TOOLS_WIN_TOOLCHAIN: 0
+        run: |
+          python setup.py v8
+      
+      - name: STEP 4.2. Save V8 cache
+        uses: actions/cache/save@v3
+        id: cache-v8-restore
+        env:
+          cache-name: v8
+        with:
+          path: v8
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/v8-version.h') }}
+
+      - name: STEP 4.3. Build wheel
+        shell: cmd
+        env:
+          BOOST_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}\include
+          BOOST_LIBRARY_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}\lib
+          DEPOT_TOOLS_WIN_TOOLCHAIN: 0
+        run: |
+          @echo on
+          echo BOOST_INCLUDE_DIR=${{steps.install-boost.outputs.BOOST_ROOT}}\include BOOST_LIBRARY_DIR=${{steps.install-boost.outputs.BOOST_ROOT}}\lib 
+        # python setup.py sdist bdist_wheel -d stpyv8-${{ matrix.os }}-${{ matrix.python-version }}
+        # python setup.py install
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
+      - name: STEP 5. Test wheel
+        run: |
+          pytest -v
+
+      - name: STEP 6. Create wheel zip
+        uses: vimtor/action-zip@v1.1
+        with:
+          files: stpyv8-${{ matrix.os }}-${{ matrix.python-version }}/
+          recursive: false
+          dest: stpyv8-${{ matrix.os }}-python-${{ matrix.python-version }}.zip
+
+      # - name: STEP 7. Upload wheel zip
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: wheels
+      #     path: stpyv8-${{ matrix.os }}-python-${{ matrix.python-version }}.zip
