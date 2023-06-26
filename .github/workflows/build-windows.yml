@@ -26,12 +26,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: STEP 2.1 Create build folders  # TODO check if needed
-        shell: bash
-        run: |
-          mkdir -p "$DEPOT_HOME"
-          mkdir -p "$V8_HOME"
-          echo "$DEPOT_HOME $V8_HOME"
+      # - name: STEP 2.1 Create build folders  # TODO check if needed
+      #   shell: bash
+      #   run: |
+      #     mkdir -p "$DEPOT_HOME"
+      #     mkdir -p "$V8_HOME"
+      #     echo "$DEPOT_HOME $V8_HOME"
 
       - name: Setup Boost
         uses: MarkusJx/install-boost@v2.4.1
