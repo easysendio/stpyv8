@@ -14,8 +14,8 @@ jobs:
         os: [windows-latest]
         python-version: ["3.11"]
     env:  # d:\ is 14GB. V8 hits that
-      DEPOT_HOME: "C:\\tmp_stpyv8\\depot_home"
-      V8_HOME: "C:\\tmp_stpyv8\\v8"
+      DEPOT_HOME: 'C:\tmp_stpyv8\depot_home'
+      V8_HOME: 'C:\tmp_stpyv8\v8'
 
     steps:
       - name: STEP 1. Checkout repository
