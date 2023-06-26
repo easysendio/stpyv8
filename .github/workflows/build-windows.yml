@@ -80,7 +80,7 @@ jobs:
           cache-name: v8
         with:
           path: env.DEPOT_HOME
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles("$DEPOT_HOME/**/v8-version.h") }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('env.DEPOT_HOME/**/v8-version.h') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
 
@@ -100,7 +100,7 @@ jobs:
           cache-name: v8
         with:
           path: env.DEPOT_HOME
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles("$DEPOT_HOME/**/v8-version.h") }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('env.DEPOT_HOME/**/v8-version.h') }}
 
       - name: STEP 4.3. Build wheel
         shell: cmd
