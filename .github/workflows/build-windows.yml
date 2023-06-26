@@ -14,8 +14,8 @@ jobs:
         os: [windows-latest]
         python-version: ["3.11"]
     env:  # d:\ is 14GB. V8 hits that
-      DEPOT_HOME: "C:/tmp_stpyv8/depot_home"
-      V8_HOME: "C:/tmp_stpyv8/v8"
+      DEPOT_HOME: "C:\\tmp_stpyv8\\depot_home"
+      V8_HOME: "C:\\tmp_stpyv8\\v8"
 
     steps:
       - name: STEP 1. Checkout repository
@@ -31,6 +31,7 @@ jobs:
         run: |
           mkdir -p "$DEPOT_HOME"
           mkdir -p "$V8_HOME"
+          echo "$DEPOT_HOME $V8_HOME"
 
       - name: Setup Boost
         uses: MarkusJx/install-boost@v2.4.1
