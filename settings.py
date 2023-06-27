@@ -18,10 +18,13 @@ v8_deps_linux = os.environ.get('V8_DEPS_LINUX', '1') in ('1', )
 
 ICU_DATA_FOLDER_UNIX = "/usr/share/stpyv8"
 ICU_DATA_FOLDER_OSX  = "/Library/Application Support/STPyV8/"
+ICU_DATA_FOLDER_WINDOWS = "/usr/share/stpyv8"
 
 if os.name in ("posix", ):
     icu_data_folder = ICU_DATA_FOLDER_OSX if sys.platform in ("darwin", ) else ICU_DATA_FOLDER_UNIX
-else:
+elif os.name in ("nt", ):
+    icu_data_folder = ICU_DATA_FOLDER_WINDOWS
+else
     icu_data_folder = None
 
 os.environ['PATH'] = f"{os.environ['PATH']}:{DEPOT_HOME}"
