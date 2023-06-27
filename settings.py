@@ -24,7 +24,7 @@ if os.name in ("posix", ):
     icu_data_folder = ICU_DATA_FOLDER_OSX if sys.platform in ("darwin", ) else ICU_DATA_FOLDER_UNIX
 elif os.name in ("nt", ):
     icu_data_folder = ICU_DATA_FOLDER_WINDOWS
-else
+else:
     icu_data_folder = None
 
 os.environ['PATH'] = f"{os.environ['PATH']}:{DEPOT_HOME}"
