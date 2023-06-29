@@ -154,6 +154,8 @@ class stpyv8_build_no_v8(build_ext):
 
 class stpyv8_v8_remote_version(build_ext):
     def run(self):
+        V8_GIT_TAG = V8_GIT_TAG_MASTER # pylint:disable=redefined-outer-name,unused-variable
+        install_depot()
         checkout_v8()
         build_ext.run(self)
 
