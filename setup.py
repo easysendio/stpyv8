@@ -152,6 +152,11 @@ class stpyv8_build_no_v8(build_ext):
         clean_stpyv8()
         build_ext.run(self)
 
+class stpyv8_v8_remote_version(build_ext):
+    def run(self):
+        checkout_v8()
+        build_ext.run(self)
+
 
 class stpyv8_install(install):
     def run(self):
@@ -212,5 +217,6 @@ setup(name         = "stpyv8",
           develop   = stpyv8_develop,
           v8        = stpyv8_install_v8,
           stpyv8    = stpyv8_build_no_v8,
-          install   = stpyv8_install),
+          install   = stpyv8_install,
+          v8_version= stpyv8_v8_remote_version),
 )
