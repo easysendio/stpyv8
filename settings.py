@@ -37,12 +37,12 @@ gn_args = {
   "target_cpu"                         : "\"x64\"",
   "treat_warnings_as_errors"           : "false",
   "use_custom_libcxx"                  : "false",
-  "v8_deprecation_warnings"            : "true",
+  "v8_deprecation_warnings"            : "false",
   "v8_enable_disassembler"             : "false",
   "v8_enable_i18n_support"             : "true",
   "v8_enable_pointer_compression"      : "false",
   "v8_enable_31bit_smis_on_64bit_arch" : "false",
-  "v8_imminent_deprecation_warnings"   : "true",
+  "v8_imminent_deprecation_warnings"   : "false",
   "v8_monolithic"                      : "true",
   "v8_use_external_startup_data"       : "false"
 }
