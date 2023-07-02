@@ -75,6 +75,17 @@ jobs:
         run: |
           pip install --upgrade pip setuptools wheel pytest
 
+      - name: Cache V8
+        id: cache-v8
+        uses: actions/cache@v3
+        env:
+          cache-name: v8
+        with:
+          path: env.DEPOT_HOME
+          key: ${{ matrix.os }}-build-${{ env.cache-name }}-${{ hashFiles('env.DEPOT_HOME/**/v8-version.h') }}
+          restore-keys: |
+            ${{ matrix.os }}-build-${{ env.cache-name }}-
+
       - name: STEP 4.1. Build V8
         shell: bash
         continue-on-error: True
@@ -86,25 +97,15 @@ jobs:
           env
           python setup.py v8
       
-      # - name: Cache V8
-      #   id: cache-v8
-      #   uses: actions/cache@v3
-      #   env:
-      #     cache-name: v8
-      #   with:
-      #     path: env.DEPOT_HOME
-      #     key: ${{ matrix.os }}-build-${{ env.cache-name }}-${{ hashFiles('env.DEPOT_HOME/**/v8-version.h') }}
-      #     restore-keys: |
-      #       ${{ matrix.os }}-build-${{ env.cache-name }}-
 
-      # - name: STEP 4.2. Save V8 cache
-      #   uses: actions/cache/save@v3
-      #   id: cache-v8-restore
-      #   env:
-      #     cache-name: v8
-      #   with:
-      #     path: env.DEPOT_HOME
-      #     key: ${{ matrix.os }}-build-${{ env.cache-name }}-${{ hashFiles('env.DEPOT_HOME/**/v8-version.h') }}
+      - name: STEP 4.2. Save V8 cache
+        uses: actions/cache/save@v3
+        id: cache-v8-restore
+        env:
+          cache-name: v8
+        with:
+          path: env.DEPOT_HOME
+          key: ${{ matrix.os }}-build-${{ env.cache-name }}-${{ hashFiles('env.DEPOT_HOME/**/v8-version.h') }}
 
       - name: STEP 4.3. Build wheel
         shell: bash
