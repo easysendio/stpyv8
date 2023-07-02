@@ -32,7 +32,7 @@ os.environ['PATH'] = f"{os.environ['PATH']}:{DEPOT_HOME}"
 gn_args = {
   "dcheck_always_on"                   : "false",
   "target_os"                          : "\"win\"",
-  "is_component_build"                 : "true",
+  "is_component_build"                 : "false",
   "is_debug"                           : "true",
   "target_cpu"                         : "\"x64\"",
   "treat_warnings_as_errors"           : "false",
