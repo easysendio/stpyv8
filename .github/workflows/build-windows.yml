@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # targetplatform: [x64] # TODO x86
+        targetplatform: [x64] # TODO x86
         os: [windows-latest]
         python-version: ["3.11"]
     env:  # d:\ is 14GB. V8 hits that limit sometimes
