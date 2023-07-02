@@ -86,16 +86,16 @@ jobs:
           env
           python setup.py v8
       
-      - name: Cache V8
-        id: cache-v8
-        uses: actions/cache@v3
-        env:
-          cache-name: v8
-        with:
-          path: env.DEPOT_HOME
-          key: ${{ matrix.os }}-build-${{ env.cache-name }}-${{ hashFiles('env.DEPOT_HOME/**/v8-version.h') }}
-          restore-keys: |
-            ${{ matrix.os }}-build-${{ env.cache-name }}-
+      # - name: Cache V8
+      #   id: cache-v8
+      #   uses: actions/cache@v3
+      #   env:
+      #     cache-name: v8
+      #   with:
+      #     path: env.DEPOT_HOME
+      #     key: ${{ matrix.os }}-build-${{ env.cache-name }}-${{ hashFiles('env.DEPOT_HOME/**/v8-version.h') }}
+      #     restore-keys: |
+      #       ${{ matrix.os }}-build-${{ env.cache-name }}-
 
       # - name: STEP 4.2. Save V8 cache
       #   uses: actions/cache/save@v3
