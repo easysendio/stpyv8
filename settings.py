@@ -115,7 +115,7 @@ if os.name in ("nt", ):
     # include_dirs       += os.environ["INCLUDE"].split(';')
     # library_dirs       += os.environ["LIB"].split(';')
     libraries          += ["winmm", "ws2_32"]
-    extra_compile_args += ["/O2", "/GL", "/MT", "/EHsc", "/Gy", "/Zi"]
+    extra_compile_args += ["/std:c++20", "/O2", "/GL", "/MT", "/EHsc", "/Gy", "/Zi"]
     extra_link_args    += ["/DLL", "/OPT:REF", "/OPT:ICF", "/MACHINE:X86"]
 elif os.name in ("posix", ):
     libraries = ["boost_system", "boost_iostreams", "v8_monolith", STPYV8_BOOST_PYTHON]
