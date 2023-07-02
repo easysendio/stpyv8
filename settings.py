@@ -42,7 +42,7 @@ gn_args = {
   "v8_enable_i18n_support"             : "true",
   "v8_enable_pointer_compression"      : "false",
   "v8_enable_31bit_smis_on_64bit_arch" : "false",
-  "v8_imminent_deprecation_warnings"   : "false",
+  "v8_imminent_deprecation_warnings"   : "true",
   "v8_monolithic"                      : "true",
   "v8_use_external_startup_data"       : "false"
 }
