@@ -5,9 +5,15 @@
 #define LOGVAR(x) "NOTE::" #x " is " x
 #include <string>
 
-#pragma message LOGVAR(_WIN32)
-#pragma message LOGVAR(_WIN64)
-#pragma message LOGVAR(COMPILER)
+#ifdef _WIN32
+#pragma message "_WIN32 is " _WIN32
+#endif
+#ifdef _WIN64
+#pragma message "_WIN64 is " _WIN64
+#endif
+#ifdef COMPILER
+#pragma message "COMPILER is " COMPILER
+#endif
 
 #ifdef _WIN32
 #ifdef DEBUG
