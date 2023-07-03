@@ -87,7 +87,7 @@ jobs:
             ${{ matrix.os }}-build-${{ env.cache-name }}-
 
       - name: STEP 4.1. Build V8
-        shell: bash
+        shell: cmd
         continue-on-error: True
         env:
           BOOST_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}\include
@@ -108,7 +108,7 @@ jobs:
       #     key: ${{ matrix.os }}-build-${{ env.cache-name }}-${{ hashFiles('env.DEPOT_HOME/**/v8-version.h') }}
 
       - name: STEP 4.4. Build wheel
-        shell: bash
+        shell: cmd
         continue-on-error: True
         env:
           BOOST_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}\include
