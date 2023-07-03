@@ -1,6 +1,13 @@
 #pragma once
+#define XSTR(x) STR(x)
+#define STR(x) #x
 
+#define LOGVAR(x) "NOTE::" #x " is " x
 #include <string>
+
+#pragma message LOGVAR(_WIN32)
+#pragma message LOGVAR(_WIN64)
+#pragma message LOGVAR(COMPILER)
 
 #ifdef _WIN32
 #ifdef DEBUG
