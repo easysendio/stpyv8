@@ -1,23 +1,23 @@
 #pragma once
 #include <string>
 
-#pragma message "START"
+#pragma message ( "START" )
 #ifdef WIN32
-#pragma message "WIN32 is " WIN32
+#pragma message ( WIN32 )
 #endif
 #ifdef _WIN32
-#pragma message "_WIN32 is " _WIN32
+#pragma message ( _WIN32 )
 #endif
 #ifdef WIN64
-#pragma message "WIN64 is " WIN64
+#pragma message ( WIN64 )
 #endif
 #ifdef _WIN64
-#pragma message "_WIN64 is " _WIN64
+#pragma message ( _WIN64 )
 #endif
 #ifdef COMPILER
-#pragma message "COMPILER is " COMPILER
+#pragma message ( COMPILER )
 #endif
-#pragma message "END"
+#pragma message ( "END" )
 
 #ifdef _WIN32
 #ifdef DEBUG
